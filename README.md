@@ -6,7 +6,7 @@ Helper components to allow terser implementation of AR using [react-reality](htt
 
 ## ARSign
 
-Quickly create a 2-d sign with text floating in space. Acts as a geometry
+Quickly create a 2-d sign with text floating in space. Acts as a geometry. (E.g. you mount it on a node)
 
 ### Props
 
@@ -25,12 +25,14 @@ Inherits props from `<ARPlaneScene />` and adds
 
 ## ARPlaneScene
 
-A more generalized implementation that mounts an `<ARSKScene />` on a `<ARPlane >` to speed up generation of 2-D content floating in space.
+A more generalized implementation that mounts an `<ARSKScene />` on a `<ARPlane />` to speed up generation of 2-D content floating in space. Acts as a geometry.
 
 ### Props
 
 Inherits from `<ARPlane />` and `<ARSKScene />` and adds
 `ppm`: The pixels-per-meter (roughly DPI x 38) to define detail level of your sign.
+
+**Note** An even higher-level implementation that smushes the node props in is available as `<ARPlaneSceneNode />`
 
 # Enhanced Geometries
 
@@ -84,6 +86,7 @@ The following components smush the properties of the node with the properties of
 - ARTorusNode
 - ARTubeNode
 - ARSignNode
+- ARPlaneSceneNode
 
 ## Colored Geometry-Node Combinations
 
