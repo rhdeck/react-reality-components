@@ -2,12 +2,15 @@
 
 Helper components to allow terser implementation of AR using [react-reality](https://github.com/rhdeck/react-reality)
 
-# ARSign
+# 2-D Enhancements
+
+## ARSign
 
 Quickly create a 2-d sign with text floating in space. Acts as a geometry
 
 ### Props
 
+Inherits props from `<ARPlaneScene />` and adds
 `text`: The text to display
 
 ### Example
@@ -20,9 +23,14 @@ Quickly create a 2-d sign with text floating in space. Acts as a geometry
 
 **Note** An even higher-level implementation that smushes the node props in is available as `<ARSignNode />`
 
-# ARPlaneScene
+## ARPlaneScene
 
 A more generalized implementation that mounts an `<ARSKScene />` on a `<ARPlane >` to speed up generation of 2-D content floating in space.
+
+### Props
+
+Inherits from `<ARPlane />` and `<ARSKScene />` and adds
+`ppm`: The pixels-per-meter (roughly DPI x 38) to define detail level of your sign.
 
 # Enhanced Geometries
 
