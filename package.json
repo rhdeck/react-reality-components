@@ -19,6 +19,7 @@
   "author": "Ray Deck",
   "license": "MIT",
   "dependencies": {
+    "prop-types": "^15.6.1",
     "react-reality": "rhdeck/react-reality"
   }
 }
