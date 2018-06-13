@@ -1,0 +1,24 @@
+{
+  "name": "react-reality-components",
+  "version": "1.0.0",
+  "description": "Higher-level component library for react-reality",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/rhdeck/react-reality-components"
+  },
+  "keywords": [
+    "react-reality",
+    "ar",
+    "react-native",
+    "arkit"
+  ],
+  "author": "Ray Deck",
+  "license": "MIT",
+  "dependencies": {
+    "react-reality": "rhdeck/react-reality"
+  }
+}
