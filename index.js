@@ -164,3 +164,4 @@ ARSign.propTypes = {
   text: PropTypes.string.isRequired
 };
 export const ARSignNode = GeoNode(ARSign);
+export const ARPlaneSceneNode = GeoNode(ARPlaneSceneNode);
