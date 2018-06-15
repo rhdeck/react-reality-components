@@ -34,6 +34,23 @@ Inherits from `<ARPlane />` and `<ARSKScene />` and adds
 
 **Note** An even higher-level implementation that smushes the node props in is available as `<ARPlaneSceneNode />`
 
+## ARCenteredSKLabel
+
+Creates a text label with horizontal and vertical centering.
+
+### Props
+
+Other props inherited from `<ARSKLabel />`
+
+### Example
+
+```jsx
+<ARNode>
+<ARPlaneScene>
+  <ARCenteredSKLabel width={10 * 38} height={10*38} text="Hi there everybody" />
+</ARPlaneScene>
+```
+
 # Enhanced Geometries
 
 ## Colored Geometries
@@ -167,3 +184,23 @@ If prop `index` is specified, the texture is applied only to that face of the ge
   <ARTexture index={5} path={mytexturepath} />
 </ARBox>
 ```
+
+# ARNoSession
+
+Component whose children are displayed when the AR session is not spun up yet. Use for placeholder views.
+
+# ARIsSession
+
+Component whose chidren are displayed when the AR sesison is loaded
+
+# ARMeNode
+
+Component that represents current user position. Implements the details of a `<ARPositionProvider />` so you don't have to.
+
+# ARNoTracking
+
+Component that shows children when you have no planes or images are detected. Requires `<ARTrackingProvider />` ancestor in tree
+
+# ARIsTracking
+
+Component that shows only when at least one plane or image detecrted. Requires `<ARTrackingProvider />` ancestor in tree

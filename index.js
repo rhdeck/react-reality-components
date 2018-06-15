@@ -10,12 +10,16 @@ import {
   ARPyramid,
   ARCone,
   ARPlane,
-  ARSphere,
   ARText,
   ARTorus,
   ARTube,
-  ARCapsule
+  ARCapsule,
+  ARShape,
+  ARTrackingConsumer,
+  ARNode,
+  ARPositionProvider
 } from "react-reality";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { ARGeometry } from "../GitHub/react-native-arkit-swift/components/ARGeometry";
 //#region Materials
@@ -108,7 +112,7 @@ export const ARShapeNode = GeoNode(ARShape);
 export const ARSphereNode = GeoNode(ARSphere);
 export const ARTorusNode = GeoNode(ARTorus);
 export const ARTubeNode = GeoNode(ARTube);
-
+export const ARTextNode = GeoNode(ARText);
 export const ARColoredBoxNode = GeoNode(ARColoredBox);
 export const ARColoredCapsuleNode = GeoNode(ARColoredCapsule);
 export const ARColoredConeNode = GeoNode(ARColoredCone);
@@ -119,7 +123,7 @@ export const ARColoredShapeNode = GeoNode(ARColoredShape);
 export const ARColoredSphereNode = GeoNode(ARColoredSphere);
 export const ARColoredTorusNode = GeoNode(ARColoredTorus);
 export const ARColoredTubeNode = GeoNode(ARColoredTube);
-
+export const ARColoredTextNode = GeoNode(ARColoredText);
 export const ARTexturedBoxNode = GeoNode(ARTexturedBox);
 export const ARTexturedCapsuleNode = GeoNode(ARTexturedCapsule);
 export const ARTexturedConeNode = GeoNode(ARTexturedCone);
@@ -130,30 +134,53 @@ export const ARTexturedShapeNode = GeoNode(ARTexturedShape);
 export const ARTexturedSphereNode = GeoNode(ARTexturedSphere);
 export const ARTexturedTorusNode = GeoNode(ARTexturedTorus);
 export const ARTexturedTubeNode = GeoNode(ARTexturedTube);
+export const ARTexturedTextNode = GeoNode(ARTexturedText);
 //#endregion
 
 export const ARPlaneScene = props => {
   return (
     <ARPlane {...props}>
-      <ARMaterial id={0}>
-        <ARMaterialProperty>
+      <ARMaterials>
+        <ARMaterialProperty color="yellow">
           <ARSKScene
+            {...props}
             height={props.height * props.ppm}
             width={props.width * props.ppm}
-          />
+          >
+            {props.children}
+          </ARSKScene>
         </ARMaterialProperty>
-      </ARMaterial>
+      </ARMaterials>
     </ARPlane>
   );
 };
 //#sign
+
+export const ARCenteredSKLabel = props => {
+  return (
+    <ARSKLabel
+      horizontalAlignment="center"
+      verticalAlignment="center"
+      {...props}
+      position={{ x: props.width / 2, y: props.height / 2 }}
+    />
+  );
+};
 export const ARSign = props => {
-  <ARPlaneScene {...props}>
-    <ARSKLabel text={props.text} />
-  </ARPlaneScene>;
+  return (
+    <ARPlaneScene {...props}>
+      <ARCenteredSKLabel
+        {...props}
+        height={props.height * props.ppm}
+        width={props.width * props.ppm}
+      />
+    </ARPlaneScene>
+  );
 };
 ARPlaneScene.defaultProps = {
-  ppm: 100 * 38 // 100 dpi
+  ppm: 10 * 38, // 10 dpi,
+  height: 1,
+  width: 1
 };
 ARPlaneScene.propTypes = {
   ...ARPlane.propTypes,
@@ -163,5 +190,75 @@ ARSign.propTypes = {
   ...ARPlaneScene.propTypes,
   text: PropTypes.string.isRequired
 };
+ARSign.defaultProps = {
+  ppm: 10 * 38, // 10 dpi,
+  height: 1,
+  width: 1
+};
 export const ARSignNode = GeoNode(ARSign);
 export const ARPlaneSceneNode = GeoNode(ARPlaneSceneNode);
+
+export const ARNoSession = props => {
+  return (
+    <ARSessionConsumer>
+      {({ isStarted }) => {
+        if (typeof isStarted == undefined)
+          throw new Error(
+            "ARNoSession must be a descendent of ARSessionProvider"
+          );
+        if (!isStarted) {
+          return this.props.children;
+        }
+        return null;
+      }}
+    </ARSessionConsumer>
+  );
+};
+export const ARIsSession = props => {
+  return (
+    <ARSessionConsumer>
+      {({ isStarted }) => {
+        if (typeof isStarted == undefined)
+          throw new Error(
+            "ARNoSession must be a descendent of ARSessionProvider"
+          );
+        if (isStarted) {
+          return this.props.children;
+        }
+        return null;
+      }}
+    </ARSessionConsumer>
+  );
+};
+export const ARNoTracking = props => {
+  return (
+    <ARTrackingConsumer>
+      {({ anchors }) => {
+        if (!anchors || !Object.keys(anchors).length) {
+          return props.children;
+        }
+      }}
+    </ARTrackingConsumer>
+  );
+};
+export const ARIsTracking = props => {
+  return (
+    <ARTrackingConsumer>
+      {({ anchors }) => {
+        if (anchors && Object.keys(anchors).length) {
+          return props.children;
+        }
+      }}
+    </ARTrackingConsumer>
+  );
+};
+
+export const ARMeNode = props => {
+  return (
+    <ARPositionProvider>
+      {({ position }) => {
+        return <ARNode {...props} position={position} />;
+      }}
+    </ARPositionProvider>
+  );
+};
