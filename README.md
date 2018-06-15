@@ -137,6 +137,10 @@ The following components smush the props of the node and the geometry but allo a
 - ARTexturedTorusNode
 - ARTexturedTubeNode
 
+## ARMeNode
+
+Component that represents current user position. Implements the details of a `<ARPositionProvider />` so you don't have to.
+
 # Enhanced Materials
 
 ## ARColor
@@ -185,22 +189,20 @@ If prop `index` is specified, the texture is applied only to that face of the ge
 </ARBox>
 ```
 
-# ARNoSession
+# Enhanced Context Providers
+
+## ARNoSession
 
 Component whose children are displayed when the AR session is not spun up yet. Use for placeholder views.
 
-# ARIsSession
+## ARIsSession
 
 Component whose chidren are displayed when the AR sesison is loaded
 
-# ARMeNode
-
-Component that represents current user position. Implements the details of a `<ARPositionProvider />` so you don't have to.
-
-# ARNoTracking
+## ARNoTracking
 
 Component that shows children when you have no planes or images are detected. Requires `<ARTrackingProvider />` ancestor in tree
 
-# ARIsTracking
+## ARIsTracking
 
 Component that shows only when at least one plane or image detecrted. Requires `<ARTrackingProvider />` ancestor in tree
