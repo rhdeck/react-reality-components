@@ -17,7 +17,8 @@ import {
   ARShape,
   ARTrackingConsumer,
   ARNode,
-  ARPositionProvider
+  ARPositionProvider,
+  ARSKNodeConsumer
 } from "react-reality";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -158,22 +159,25 @@ export const ARPlaneScene = props => {
 
 export const ARCenteredSKLabel = props => {
   return (
-    <ARSKLabel
-      horizontalAlignment="center"
-      verticalAlignment="center"
-      {...props}
-      position={{ x: props.width / 2, y: props.height / 2 }}
-    />
+    <ARSKNodeConsumer>
+      {({ height, width }) => {
+        return (
+          <ARSKLabel
+            horizontalAlignment="center"
+            verticalAlignment="center"
+            {...props}
+            position={{ x: width / 2, y: height / 2 }}
+          />
+        );
+      }}
+    </ARSKNodeConsumer>
   );
 };
 export const ARSign = props => {
+  const { height, width, ...labelProps } = props;
   return (
     <ARPlaneScene {...props}>
-      <ARCenteredSKLabel
-        {...props}
-        height={props.height * props.ppm}
-        width={props.width * props.ppm}
-      />
+      <ARCenteredSKLabel {...labelProps} />
     </ARPlaneScene>
   );
 };
@@ -184,6 +188,7 @@ ARPlaneScene.defaultProps = {
 };
 ARPlaneScene.propTypes = {
   ...ARPlane.propTypes,
+  ...ARSKScene.propTypes,
   ppm: PropTypes.number
 };
 ARSign.propTypes = {
@@ -191,9 +196,7 @@ ARSign.propTypes = {
   text: PropTypes.string.isRequired
 };
 ARSign.defaultProps = {
-  ppm: 10 * 38, // 10 dpi,
-  height: 1,
-  width: 1
+  ...ARPlaneScene.defaultProps
 };
 export const ARSignNode = GeoNode(ARSign);
 export const ARPlaneSceneNode = GeoNode(ARPlaneSceneNode);
