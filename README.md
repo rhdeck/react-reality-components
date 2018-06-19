@@ -4,6 +4,18 @@ Helper components to allow terser implementation of AR using [react-reality](htt
 
 # 2-D Enhancements
 
+## ARButton
+
+Quickly create a 2-d tappable button floating in space. It is a node, but is best mounted on a node with a bit of distance to the user. Requires viewing through `<ARTouchableMonoView />` - otherwise how would you tap it?
+
+### Props
+
+Inherits props from `<ARSign />` and adds:
+
+- `title`: Title text for the button
+- `pressDepth`: How much to change z-position when pressed. (negative for "press-in") (Default -0.2 meters)
+- `highlightColor`: Color to change to when pressed. (default: purple)
+
 ## ARSign
 
 Quickly create a 2-d sign with text floating in space. Acts as a geometry. (E.g. you mount it on a node)

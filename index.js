@@ -17,12 +17,13 @@ import {
   ARShape,
   ARTrackingConsumer,
   ARNode,
-  ARPositionProvider,
-  ARSKNodeConsumer
+  ARSKNodeConsumer,
+  ARPositionConsumer,
+  ARAnimatedProvider,
+  ARPositionProvider
 } from "react-reality";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { ARGeometry } from "../GitHub/react-native-arkit-swift/components/ARGeometry";
 //#region Materials
 export const ARColor = ({ color, index }) => {
   if (typeof index == "undefined") {
@@ -147,9 +148,7 @@ export const ARPlaneScene = props => {
             {...props}
             height={props.height * props.ppm}
             width={props.width * props.ppm}
-          >
-            {props.children}
-          </ARSKScene>
+          />
         </ARMaterialProperty>
       </ARMaterials>
     </ARPlane>
@@ -163,10 +162,12 @@ export const ARCenteredSKLabel = props => {
       {({ height, width }) => {
         return (
           <ARSKLabel
+            height={height}
+            width={width}
             horizontalAlignment="center"
             verticalAlignment="center"
             {...props}
-            position={{ x: width / 2, y: height / 2 }}
+            position={{ x: parseInt(width / 2.0), y: parseInt(height / 2.0) }}
           />
         );
       }}
@@ -258,10 +259,67 @@ export const ARIsTracking = props => {
 
 export const ARMeNode = props => {
   return (
-    <ARPositionProvider>
-      {({ position }) => {
+    <ARPositionConsumer>
+      {({ position, orientation }) => {
+        if (typeof orientation.x === "undefined") {
+          return (
+            <ARPositionProvider>
+              <ARMeNode {...props} />
+            </ARPositionProvider>
+          );
+        }
         return <ARNode {...props} position={position} />;
       }}
-    </ARPositionProvider>
+    </ARPositionConsumer>
   );
+};
+
+export class ARButton extends Component {
+  state = {
+    zPos: 0,
+    color: "red"
+  };
+  componentWillMount() {
+    this.setState({ color: this.props.color && "blue" });
+  }
+  render() {
+    return (
+      <ARAnimatedProvider milliseconds={250}>
+        <ARNode
+          position={{ z: this.state.zPos }}
+          onPressIn={() => {
+            this.setState({
+              zPos: this.props.pressDepth,
+              color: this.props.highlightColor
+            });
+            this.props.onPressIn && this.props.onPressIn();
+          }}
+          onPressOut={() => {
+            this.setState({ zPos: 0, color: this.props.color });
+            this.props.onPressOut && this.props.onPressOut();
+          }}
+          onPress={this.props.onPress}
+        >
+          <ARSign
+            height={this.props.height}
+            width={this.props.width}
+            color={this.state.color}
+            fontColor={this.props.fontColor}
+            text={this.props.title}
+            ppm={this.props.ppm}
+            fontSize={this.props.fontSize}
+          />
+        </ARNode>
+      </ARAnimatedProvider>
+    );
+  }
+}
+ARButton.defaultProps = {
+  width: 1,
+  height: 0.5,
+  color: "blue",
+  highlightColor: "purple",
+  fontColor: "white",
+  onPress: () => {},
+  pressDepth: -0.2
 };
