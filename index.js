@@ -211,7 +211,7 @@ export const ARNoSession = props => {
             "ARNoSession must be a descendent of ARSessionProvider"
           );
         if (!isStarted) {
-          return this.props.children;
+          return props.children;
         }
         return null;
       }}
@@ -227,7 +227,7 @@ export const ARIsSession = props => {
             "ARNoSession must be a descendent of ARSessionProvider"
           );
         if (isStarted) {
-          return this.props.children;
+          return props.children;
         }
         return null;
       }}
